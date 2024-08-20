@@ -63,9 +63,13 @@ def get_head_rev():
   return subprocess.check_output("git rev-parse --short HEAD", shell=True).decode("utf-8").strip()
 
 
+def get_image_name(dockerfile: str) -> str:
+  # given /path/to/ubuntu_20.04.Dockerfile, image_name = ubuntu_20.04
+  return os.path.basename(dockerfile).rsplit('.Dockerfile', 1)[0]
+
+
 def multi_arch_build(dockerfile: str, push: bool = False, yes: bool = False):
-    # given /path/to/ubuntu_20.04.Dockerfile, image_name = ubuntu_20.04
-    image_name = os.path.basename(dockerfile).rsplit('.Dockerfile', 1)[0]
+    image_name = get_image_name(dockerfile)
     push_or_load = "push" if push else "load"
     
     build_command = "\n".join([
@@ -108,16 +112,21 @@ def multi_arch_build(dockerfile: str, push: bool = False, yes: bool = False):
 
 
 def main():
-  available_dockerfiles = [os.path.join(ROOT_DIR, f) for f in os.listdir(ROOT_DIR) if f.endswith(".Dockerfile")]
-
+  dockerfiles = [os.path.join(ROOT_DIR, f) for f in os.listdir(ROOT_DIR) if f.endswith(".Dockerfile")]
+  imagename_to_dockerfile = {get_image_name(dockerfile_path): dockerfile_path for dockerfile_path in dockerfiles}
+  
   parser = argparse.ArgumentParser(description="Build script for docker images.")
-  parser.add_argument("dockerfile", choices=available_dockerfiles, help="The dockerfile to build")
+  parser.add_argument("imagename", choices=list(imagename_to_dockerfile.keys()), help="The dockerfile to build")
   parser.add_argument("--push", action="store_true", help="Push the image to docker hub")
   parser.add_argument("--yes", action="store_true", help="Don't prompt for build confirmation")
   args = parser.parse_args()
 
   assert_git_clean()
-  multi_arch_build(dockerfile=args.dockerfile, push=args.push, yes=args.yes)
+  multi_arch_build(
+    dockerfile=imagename_to_dockerfile[args.imagename], 
+    push=args.push, 
+    yes=args.yes,
+  )
 
 
 if __name__ == "__main__":

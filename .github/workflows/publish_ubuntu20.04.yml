@@ -21,4 +21,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and push
-        run: ./devcontainer/build.py ubuntu_20.04.Dockerfile --push --yes
+        run: ./build.py ubuntu_20.04 --push --yes
