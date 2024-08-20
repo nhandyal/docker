@@ -1,0 +1,7 @@
+{
+	"name": "",
+	"build": {
+		"context": "../",
+		"dockerfile": "../ubuntu_20.04.Dockerfile"
+	}
+}

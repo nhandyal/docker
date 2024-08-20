@@ -1,0 +1,8 @@
+# Set custom prompt
+export PS1="\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]: "
+
+# Set default editor
+export EDITOR="vim"
+
+# Sapling configuration
+ulimit -n 1048576
