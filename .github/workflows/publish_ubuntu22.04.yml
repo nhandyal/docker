@@ -1,9 +1,7 @@
 name: Publish Ubuntu 22.04
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: null
 
 jobs:
   build-and-push:
