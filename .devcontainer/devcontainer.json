@@ -2,6 +2,6 @@
 	"name": "",
 	"build": {
 		"context": "../",
-		"dockerfile": "../ubuntu_20.04.Dockerfile"
+		"dockerfile": "../ubuntu_22.04.Dockerfile"
 	}
 }
