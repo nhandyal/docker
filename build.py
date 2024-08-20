@@ -78,8 +78,8 @@ def multi_arch_build(dockerfile: str, push: bool = False, yes: bool = False):
       f"  --builder {BUILDER_NAME} \\",
       f"  --platform linux/amd64,linux/arm64 \\",
       f"  --{push_or_load} \\",
-      f"  -t {image_name}:{get_head_rev()} \\",
-      f"  -t {image_name}:latest \\",
+      f"  -t nhandyal/{image_name}:{get_head_rev()} \\",
+      f"  -t nhandyal/{image_name}:latest \\",
       f"  -f {dockerfile} \\",
       f"  {ROOT_DIR}",
     ])
